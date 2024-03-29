@@ -1,18 +1,33 @@
-// Product schema and model
+const mongoose  = require("mongoose");
 
-const mongoose = require('mongoose');
+//Defining User Schema
+const userSchema = new mongoose.Schema(
+    {
+        username: { 
+            type: String, 
+            required: true, 
+            unique: true, 
+            trim : true
+        },
+        email: { 
+            type: String, 
+            required: true, 
+            unique: true, 
+            trim : true
+        },
+        password: { 
+            type: String,  
+            required: true
+        },
+        isAdmin: { 
+            type: Boolean, 
+            default: 'false'
+        },
+    },{
+        timestamps : true
+    }
+);
 
-const usersSchema = new mongoose.Schema({
-  username: { type: String, required: true , unique:true },
-  email: { type: String, required: true , unique:true },
-  password: { type: String, required: true },
-  tel: { type: Number  },
-  address: { type: String },
-  role:{
-    type: String,
-  enum: ['user', 'admin']},
-});
+const User = mongoose.model("User", userSchema);
 
-const Users = mongoose.model('Users', usersSchema);
-
-module.exports = Users;
+module.exports = User;

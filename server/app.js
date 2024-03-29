@@ -1,29 +1,25 @@
-// Our main application file, where you set up Express, middleware, and routes. 
+// require('dotenv').config()
 const express = require('express');
-const passport = require('passport');
 const session = require('express-session');
-const cookieParser = require('cookie-parser');
+const cookieParser = require('cookie-parser')
+const passport = require('passport')
 const connect = require('./config/database');
-const {PORT} = require('./config/env') ;
-const api = require ('./routes/api');
-// const userRouters = require('./routes/userRoutes')
-// const {SECRET_KEY_SESSION} = require('./config/env')
+const api = require('./routes/api');
+
 
 
 const app = express();
-
-
+const PORT = process.env.SERVER_PORT || 3001;
 
 // Middlewares
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use('/api', api);
 
 // Configure session management
 app.use(cookieParser());
 app.use(
     session({
-        secret: "TEST", // Secret key used to sign the session ID cookie
+        secret: 'TEST', // Secret key used to sign the session ID cookie
         resave: false, // Whether to save the session for every request, even if it hasn't changed
         saveUninitialized: true, // Whether to save uninitialized sessions (new but not modified)
         cookie: {
@@ -44,12 +40,11 @@ app.use(passport.session());
 // Define tha Main function
 async function main() {
     await connect();
-    
+
+    app.use('/api', api);
     app.listen(PORT, () => {
         console.log(`Server is running on port ${PORT}`);
     });
 }
 
-
 main();
-

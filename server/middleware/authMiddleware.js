@@ -1,5 +1,3 @@
-// Authentication middleware
-
 const passport = require('passport');
 
 const authenticate = (req, res, next) => {
@@ -26,7 +24,15 @@ const isAuthenticated = (req, res, next) => {
   res.status(403).send({ message: 'You are not authorized' })
 }
 
+const isAdmin = (req, res, next) =>{
+  if(req.user.isAdmin){
+    return next();
+  }
+  res.status(403).send({ message: 'You are not authorized' })
+}
+
 module.exports = {
   isAuthenticated,
-  authenticate
+  authenticate,
+  isAdmin
 };

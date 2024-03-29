@@ -3,25 +3,44 @@ const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcrypt');
 const User = require('../models/User');
 
-passport.use(new LocalStrategy({ usernameField: 'email' }, async (email, password, done) => {
+// passport.use(new LocalStrategy({ usernameField: 'email' }, async (email, password, done) => {
   
 
-  try {
-    // Find user by email
-    const user = await User.find((user) => user.email === email);
+//   try {
+//     // Find user by email
+//     const user = await User.findOne((user) => user.email === email);
 
-    // If user not found or password incorrect
-    if (!user || !(await bcrypt.compare(password, user.password))) {
-      return done(null, false, { message: 'Invalid email or password' });
+//     // If user not found or password incorrect
+//     if (!user || !(await bcrypt.compare(password, user.password))) {
+//       return done(null, false, { message: 'Invalid email or password' });
+//     }
+
+//     // If user and password are correct
+//     return done(null, user);
+//   } catch (err) {
+//     console.error(err);
+//     return done(err);
+//   }
+// }));
+
+passport.use(new LocalStrategy({ usernameField: 'email' }, async (email, password, done) => {
+    try {
+      // Find user by email
+      const user = await User.findOne({ email: email });
+  
+      // If user not found or password incorrect
+      if (!user || !(await bcrypt.compare(password, user.password))) {
+        return done(null, false, { message: 'Invalid email or password' });
+      }
+  
+      // If user and password are correct
+      return done(null, user);
+    } catch (err) {
+      console.error(err);
+      return done(err);
     }
+  }));
 
-    // If user and password are correct
-    return done(null, user);
-  } catch (err) {
-    console.error(err);
-    return done(err);
-  }
-}));
 
 // Serialize user to session
 passport.serializeUser((user, done) => {
