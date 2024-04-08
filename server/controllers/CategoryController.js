@@ -65,16 +65,17 @@ const UpdateCategory = async (req, res) => {
 
 // delete category
 const DeleteCategory = async (req, res) => {
-try {
-    const category = await Category_Equipement.findByIdAndDelete({id_category: req.params._id});
-    console.log(category)
-    if (!category) {
-        return res.status(400).json('Delete failed');
+    try {
+        const { id_category } = req.body;
+        const category = await Category_Equipement.findOneAndDelete({ id_category: id_category });
+        if (!category) {
+            return res.status(404).json({ error: 'Category not found'});
+        }
+        res.json({ message: 'Category deleted successfully'});
+    } catch (error) {
+        console.error(error);
+        res.status(400).json({ error: 'Delete failed' });
     }
-    res.json('Category deleted successfully');
-} catch (error) {
-    return res.status(400).json('Delete failed');
-}
 }
 
 module.exports = {CreateCategory, GetAllCategories, GetCatergoryById, UpdateCategory, DeleteCategory}

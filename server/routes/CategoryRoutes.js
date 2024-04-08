@@ -6,5 +6,5 @@ CategoryRouter.post('/CreateCatergory', CreateCategory);
 CategoryRouter.get('/GetAllCategories', GetAllCategories);
 CategoryRouter.get('/GetCatergoryById/:_id', GetCatergoryById);
 CategoryRouter.put('/UpdateCategory/:id_category', UpdateCategory);
-CategoryRouter.delete('/DeleteCategory/:_id', DeleteCategory);
+CategoryRouter.delete('/DeleteCategory/:id_category', DeleteCategory);
 module.exports = CategoryRouter;
