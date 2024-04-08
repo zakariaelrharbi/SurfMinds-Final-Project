@@ -4,7 +4,7 @@ const {CreateCategory, GetAllCategories, GetCatergoryById, UpdateCategory, Delet
 
 CategoryRouter.post('/CreateCatergory', CreateCategory);
 CategoryRouter.get('/GetAllCategories', GetAllCategories);
-CategoryRouter.get('/GetCatergoryById/:_id', GetCatergoryById);
+CategoryRouter.get('/GetCatergoryById/:id_category', GetCatergoryById);
 CategoryRouter.put('/UpdateCategory/:id_category', UpdateCategory);
 CategoryRouter.delete('/DeleteCategory/:id_category', DeleteCategory);
 module.exports = CategoryRouter;
