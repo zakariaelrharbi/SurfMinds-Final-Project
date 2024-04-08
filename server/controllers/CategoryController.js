@@ -44,7 +44,7 @@ const GetCatergoryById = async (req, res) => {
 const UpdateCategory = async (req, res) => {
     try {
         const { id_category, name, description } = req.body;
-        // Assuming you have a custom method to find a category by its id_category
+        //find a category by its id_category
         const category = await Category_Equipement.findOneAndUpdate(
             { id_category: id_category },
             { name: name, description: description },
