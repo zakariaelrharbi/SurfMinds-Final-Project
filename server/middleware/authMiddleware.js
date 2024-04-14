@@ -1,4 +1,19 @@
 const passport = require('passport');
+const User = require('../models/User');
+
+// passport.serializeUser((user, done) => {
+//   done(null, user.id);
+// });
+
+// passport.deserializeUser((id, done) => {
+//   User.findById(id)
+//         .then(user => {
+//             done(null, user);
+//         })
+//         .catch(err => {
+//             done(err);
+//         });
+// });
 
 const authenticate = (req, res, next) => {
   passport.authenticate('local', { failureFlash: true }, (err, user, info) => {
@@ -25,10 +40,10 @@ const isAuthenticated = (req, res, next) => {
 }
 
 const isAdmin = (req, res, next) =>{
-  if(req.user.isAdmin){
+  if(req.user.isAdmin === true){
     return next();
   }
-  res.status(403).send({ message: 'You are not authorized' })
+  res.status(403).send({ message: 'You are not admin' })
 }
 
 module.exports = {
