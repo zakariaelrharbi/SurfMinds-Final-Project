@@ -36,7 +36,7 @@ const isAuthenticated = (req, res, next) => {
   if (req.isAuthenticated()) {
     return next();
   }
-  res.status(403).send({ message: 'You are not authorized' })
+  res.status(403).send({ message: 'You should be logged' })
 }
 
 const isAdmin = (req, res, next) =>{
