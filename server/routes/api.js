@@ -5,7 +5,7 @@ const authRoute = require ('./authRoutes');
 const productRoute = require ('./productRoutes');
 const orderRoute = require ('./orderRoutes');
 const paymentMethodRoute = require ('./paymentMethodeRoutes');
-const categoryRoute = require ('./categoryRoutes');
+const categoryRoute = require ('./categoriesRoutes');
 const userRoute = require ('./userRoutes');
 const router = express.Router();
 
