@@ -3,10 +3,6 @@
 //import the model Product
 const Product = require('../models/Product');
 
-
-
-
- 
 // Controller pour créer un nouveau produit
 async function createProduct (req, res){
   const { title, description, quantity, price, status } = req.body;
@@ -36,13 +32,31 @@ async function createProduct (req, res){
 
 // Controller pour récupérer tous les produits
 async function getAllProducts(req, res) {
-    try {
-const products = await Product.find({});
-      res.status(200).json(products);
-    } catch (err) {
-      res.status(500).json({ message: 'Non trouvé' });
+  const { title, description, quantity, price, status } = req.query;
+  let query = {};
+  try {
+    if (title) {
+      query.title = { $regex: title, $options: 'i' };
     }
+    if (description) {
+      query.description = { $regex: description, $options: 'i' };
+    }
+    if (!isNaN(parseFloat(quantity))) {
+      query.quantity = parseFloat(quantity);
+    }
+    if (!isNaN(parseFloat(price))) {
+      query.price = parseFloat(price);
+    }
+    if (status) {
+      query.status = status;
+    }
+    const products = await Product.find(query);
+    res.status(200).json(products);
+  } catch (err) {
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
 }
+
 
 // Controller pour récupérer un produit par son ID
 async function getProductById (req, res){
