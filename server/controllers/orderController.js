@@ -121,12 +121,31 @@ const deleteOrder = async (req, res) => {
         res.status(500).json({ error: 'Server error' });
     }
 };
+ //Controller Search
+ const searchOrder = async (req, res) => {
+    try {
+        const { key } = req.query; 
+        const orders = await Order.find({
+            $or: [
+                { products: { $regex: key, $options: 'i' } }, 
+                { shippingAddress: { $regex: key, $options: 'i' } }, 
+               
+            ]
+        });
+        res.json(orders);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Server error' });
+    }
+};
+
 
 module.exports = {
     createOrder,
     getAllOrders,
     getOrderById,
     updateOrder,
-    deleteOrder
+    deleteOrder,
+    searchOrder
   };
 

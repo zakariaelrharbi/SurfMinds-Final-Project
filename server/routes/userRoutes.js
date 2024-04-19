@@ -8,7 +8,10 @@ const {isAuthenticated} = require('../middleware/authMiddleware');
 
 // GET all users
 router.get('/' , isAuthenticated , isAdmin,userController.getAllUsers);
-
+//sort
+router.get('/sortUser', userController.getSortUsers);
+//Get search 
+router.get('/search', userController.searchUser);
 
 // GET a user by ID
 router.get('/:id', isAuthenticated , isAdmin, userController.getUserById);

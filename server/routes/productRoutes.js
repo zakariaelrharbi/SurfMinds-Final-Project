@@ -9,6 +9,11 @@ const {isAuthenticated} = require('../middleware/authMiddleware');
 // GET all products
 router.get('/' ,productController.getAllProducts);
 
+// GET  products  Sort
+router.get('/Price', productController.getProductsInRange);
+
+// Get  Products Search
+router.get('/search', productController.searchProducts);
 
 // GET a product by ID
 router.get('/:id', productController.getProductById);

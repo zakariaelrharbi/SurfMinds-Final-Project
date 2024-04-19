@@ -40,9 +40,36 @@ async function getAllProducts(req, res) {
 const products = await Product.find({});
       res.status(200).json(products);
     } catch (err) {
-      res.status(500).json({ message: 'Non trouvé' });
+      res.status(500).json({ message: 'Not Found' });
     }
+
 }
+
+//Controller Sort
+async function getProductsInRange(req, res) {
+    const { minPrice, maxPrice } = req.query;
+  
+    // Vérifier si les montants min et max sont fournis dans la requête
+    if (!minPrice || isNaN(minPrice) || !maxPrice || isNaN(maxPrice)) {
+        return res.status(400).json({ message: 'Montants de prix invalides ou manquants' });
+    }
+  
+    try {
+        const products = await Product.find({ 
+            price: { 
+                $gte: parseFloat(minPrice), // Montant minimum
+                $lte: parseFloat(maxPrice)  // Montant maximum
+            } 
+        }).sort({ price: 1 });
+        res.status(200).json(products);
+    } catch (err) {
+        res.status(500).json({ message: 'Erreur lors de la récupération des produits' });
+    }
+  }
+  
+
+
+
 
 // Controller pour récupérer un produit par son ID
 async function getProductById (req, res){
@@ -50,7 +77,7 @@ async function getProductById (req, res){
       const product = await Product.findById(req.params.id);
       
       if (!product) {
-        return res.status(404).json({ message: 'Produit non trouvé' });
+        return res.status(404).json({ message: 'Product Not found' });
       }
       res.status(200).json(product);
     } catch (err) {
@@ -80,6 +107,28 @@ async function getProductById (req, res){
   }
 
 
+  //Controller Search
+  async function searchProducts(req, res) {
+    const { key } = req.query;
+
+    if (!key || key.trim() === '') {
+        return res.status(400).json({ message: 'Missing or invalid search keyword' });
+    }
+
+    try {
+        const products = await Product.find({
+            $or: [
+                { title: { $regex: key, $options: 'i' } },
+                { description: { $regex: key, $options: 'i' } }
+            ]
+        });
+
+        res.status(200).json(products);
+    } catch (err) {
+        res.status(500).json({ message: 'Error occurred during product search.' });
+    }
+}
+
 
 
 
@@ -89,5 +138,7 @@ async function getProductById (req, res){
         getProductById,
         updateProductById,
         deleteProductById,
-        createProduct
+        createProduct,
+        getProductsInRange,
+        searchProducts
       };

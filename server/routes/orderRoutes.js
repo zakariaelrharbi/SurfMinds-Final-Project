@@ -9,6 +9,10 @@ const {isAuthenticated} = require('../middleware/authMiddleware');
 // GET all Orders
 router.get('/'   ,isAuthenticated  ,orderController.getAllOrders);
 
+//Get search 
+router.get('/search', orderController.searchOrder);
+
+
 
 // GET a order by ID
 router.get('/:id', orderController.getOrderById);
@@ -22,5 +26,11 @@ router.put('/:id'  ,isAuthenticated  ,orderController.updateOrder);
 
 // // Remove a order by ID
 router.delete('/:id',isAuthenticated ,  orderController.deleteOrder);
+
+
+
+
+
+
 
 module.exports = router;

@@ -34,7 +34,7 @@ async function createUser (req, res){
 
 
 
-// Controller pour récupérer tous les produits
+// Controller pour récupérer tous les Users
 async function getAllUsers(req, res) {
     try {
 const users = await User.find({});
@@ -42,6 +42,16 @@ const users = await User.find({});
     } catch (err) {
       res.status(500).json({ message: 'User not found' });
     }
+}
+
+// Controller Sort (triés par createdAt décroissant)
+async function getSortUsers(req, res) {
+  try {
+      const users = await User.find({}).sort({ createdAt: -1 }); 
+      res.status(200).json(users);
+  } catch (err) {
+      res.status(500).json({ message: 'User not found' });
+  }
 }
 
 // Controller pour récupérer un produit par son ID
@@ -79,6 +89,22 @@ async function getUserById (req, res){
     }
   }
 
+// Controller (Search)
+async function searchUser(req, res) {
+  try {
+      const { key } = req.query; 
+      const users = await User.find({
+          $or: [
+              { username: { $regex: key, $options: 'i' } },
+              { email: { $regex: key, $options: 'i' } }, 
+            
+          ]
+      });
+      res.status(200).json(users);
+  } catch (err) {
+      res.status(500).json({ message: err.message });
+  }
+}
 
 
 
@@ -89,5 +115,7 @@ async function getUserById (req, res){
         getUserById,
         updateUserById,
         deleteUserById,
-        createUser
+        createUser,
+        getSortUsers,
+        searchUser
       };
