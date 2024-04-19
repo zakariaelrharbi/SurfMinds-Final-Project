@@ -48,22 +48,20 @@ const products = await Product.find({});
 //Controller Sort
 async function getProductsInRange(req, res) {
     const { minPrice, maxPrice } = req.query;
-  
-    // Vérifier si les montants min et max sont fournis dans la requête
     if (!minPrice || isNaN(minPrice) || !maxPrice || isNaN(maxPrice)) {
-        return res.status(400).json({ message: 'Montants de prix invalides ou manquants' });
+        return res.status(400).json({ message: 'Invalid or missing price amounts' });
     }
   
     try {
         const products = await Product.find({ 
             price: { 
-                $gte: parseFloat(minPrice), // Montant minimum
-                $lte: parseFloat(maxPrice)  // Montant maximum
+                $gte: parseFloat(minPrice),
+                $lte: parseFloat(maxPrice) 
             } 
         }).sort({ price: 1 });
         res.status(200).json(products);
     } catch (err) {
-        res.status(500).json({ message: 'Erreur lors de la récupération des produits' });
+        res.status(500).json({ message: 'Error retrieving products' });
     }
   }
   
