@@ -4,13 +4,11 @@ import { FcGoogle } from 'react-icons/fc';
 import { FaApple } from 'react-icons/fa';
 import { FaUserAlt } from 'react-icons/fa';
 import { MdMailOutline, MdRemoveRedEye } from 'react-icons/md';
-import { useFormik } from 'formik';
+import { useFormik } from 'formik'; // Importing useFormik from Formik
 import axios from 'axios';
-import * as Yup from 'yup';
+import * as Yup from 'yup'; // Importing Yup for validation
 
 const Register = () => {
-  const [registrationSuccess, setRegistrationSuccess] = useState(false); // State to track registration success
-
   const formik = useFormik({
     initialValues: {
       username: '',
@@ -19,20 +17,29 @@ const Register = () => {
       termsAccepted: false,
     },
     validationSchema: Yup.object({
-      username: Yup.string().required('Username is required'),
-      email: Yup.string().email('Invalid email address').required('Email is required'),
-      password: Yup.string().required('Password is required'),
-      termsAccepted: Yup.boolean().oneOf([true], 'You must accept the terms and conditions').required('You must accept the terms and conditions'),
+      username: Yup.string().when('/', {
+        is: () => formik.submitCount > 0,
+        then: Yup.string().required('Username is required'),
+      }),
+      email: Yup.string().when('/', {
+        is: () => formik.submitCount > 0,
+        then: Yup.string().email('Invalid email address').required('Email is required'),
+      }),
+      password: Yup.string().when('/', {
+        is: () => formik.submitCount > 0,
+        then: Yup.string().required('Password is required'),
+      }),
+      termsAccepted: Yup.boolean().oneOf([true], 'You must accept the terms and conditions').when('/', {
+        is: () => formik.submitCount > 0,
+        then: Yup.boolean().required('You must accept the terms and conditions'),
+      }),
     }),
     onSubmit: async (values) => {
       try {
         await axios.post('http://localhost:3001/api/auth/register', values);
         console.log('Registration Successful');
-        setRegistrationSuccess(true); // Set registration success to true
       } catch (error) {
         console.error('Registration Failed:', error);
-      } finally {
-        formik.setSubmitting(false);
       }
     },
   });
@@ -76,11 +83,11 @@ const Register = () => {
               </button>
             </div>
           </div>
-          <form className="w-full" onSubmit={(e) => { handleSubmit(e); formik.setSubmitting(true); formik.setTouched({}); formik.setErrors({}); formik.setSubmitCount(1); }}>
+          <form className="w-full" onSubmit={handleSubmit}>
             <div className="mb-8">
               <h3 className="text-2xl font-extrabold text-left">Register</h3>
             </div>
-            <div className="space-y-2">
+            <div className="space-y-6">
               {/* Username input */}
               <div>
                 <label className="text-sm mb-2 block text-left">Username</label>
@@ -96,7 +103,7 @@ const Register = () => {
                   />
                   <FaUserAlt className="w-4 h-4 absolute right-4" />
                 </div>
-                {errors.username && <small className="text-red-500 text-xs block text-left mt-1">{errors.username}</small>}
+                {errors.username && formik.submitCount > 0 && <small className="text-red-500 text-xs">{errors.username}</small>}
               </div>
               {/* Email input */}
               <div>
@@ -113,7 +120,7 @@ const Register = () => {
                   />
                   <MdMailOutline className="w-4 h-4 absolute right-4" />
                 </div>
-                {errors.email && <small className="text-red-500 text-xs block text-left mt-1">{errors.email}</small>}
+                {errors.email && formik.submitCount > 0 && <small className="text-red-500 text-xs">{errors.email}</small>}
               </div>
               {/* Password input */}
               <div>
@@ -133,9 +140,8 @@ const Register = () => {
                     onClick={togglePasswordVisibility}
                   />
                 </div>
-                {errors.password && <small className="text-red-500 text-xs block text-left mt-1">{errors.password}</small>}
+                {errors.password && formik.submitCount > 0 && <small className="text-red-500 text-xs">{errors.password}</small>}
               </div>
-
               {/* Terms and Conditions checkbox */}
               <div className="flex items-center">
                 <input
@@ -152,14 +158,9 @@ const Register = () => {
                     Terms and Conditions
                   </a>
                 </label>
+                {errors.termsAccepted && formik.submitCount > 0 && <small className="text-red-500 text-xs">{errors.termsAccepted}</small>}
               </div>
-              {errors.termsAccepted && (
-                <div>
-                  <small className="text-red-500 text-xs block text-left mt-1">{errors.termsAccepted}</small>
-                </div>
-              )}
             </div>
-
             {/* Submit button */}
             <div className="mt-10">
               <button
@@ -172,12 +173,6 @@ const Register = () => {
                 Create Account
               </button>
             </div>
-
-            {/* Success message */}
-            {registrationSuccess && (
-              <div className="mt-4 text-green-600 text-sm">Account created successfully!</div>
-            )}
-
             <p className="text-sm mt-6 text-center">
               Already have an account?{' '}
               <a href="#" className="text-blue-600 font-semibold hover:underline ml-1">
