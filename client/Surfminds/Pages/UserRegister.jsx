@@ -4,6 +4,7 @@ import { FcGoogle } from 'react-icons/fc';
 import { FaApple } from 'react-icons/fa';
 import { FaUserAlt } from 'react-icons/fa';
 import { MdMailOutline, MdRemoveRedEye } from 'react-icons/md';
+import { IoMdEyeOff } from "react-icons/io";
 import { useFormik } from 'formik';
 import axios from 'axios';
 import * as Yup from 'yup';
@@ -116,25 +117,33 @@ const UserRegister = () => {
                 {errors.email && <small className="text-red-500 text-xs block text-left mt-1">{errors.email}</small>}
               </div>
               {/* Password input */}
-              <div>
-                <label className="text-sm mb-2 block text-left">Password</label>
-                <div className="relative flex items-center">
-                  <input
-                    name="password"
-                    type={showPassword ? 'text' : 'password'}
-                    required=""
-                    className="bg-white border border-gray-300 w-full text-sm pl-4 pr-10 py-2.5 rounded outline-blue-500"
-                    placeholder="Enter password"
-                    value={values.password}
-                    onChange={handleChange}
-                  />
-                  <MdRemoveRedEye
-                    className="w-4 h-4 absolute right-4 cursor-pointer"
-                    onClick={togglePasswordVisibility}
-                  />
-                </div>
-                {errors.password && <small className="text-red-500 text-xs block text-left mt-1">{errors.password}</small>}
-              </div>
+             <div>
+  <label className="text-sm mb-2 block text-left">Password</label>
+  <div className="relative flex items-center">
+    <input
+      name="password"
+      type={showPassword ? 'text' : 'password'}
+      required=""
+      className="bg-white border border-gray-300 w-full text-sm pl-4 pr-10 py-2.5 rounded outline-blue-500"
+      placeholder="Enter password"
+      value={values.password}
+      onChange={handleChange}
+    />
+    {showPassword ? (
+      <IoMdEyeOff
+        className="w-4 h-4 absolute right-4 cursor-pointer"
+        onClick={togglePasswordVisibility}
+      />
+    ) : (
+      <MdRemoveRedEye
+        className="w-4 h-4 absolute right-4 cursor-pointer"
+        onClick={togglePasswordVisibility}
+      />
+    )}
+  </div>
+  {errors.password && <small className="text-red-500 text-xs block text-left mt-1">{errors.password}</small>}
+</div>
+
 
               {/* Terms and Conditions checkbox */}
               <div className="flex items-center">
