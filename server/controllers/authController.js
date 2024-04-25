@@ -7,8 +7,6 @@ const login = (req, res) => {
         success: true,
         message: 'Successfully logged in'
     })
-   
-    
 };
 
 const register = async (req, res) => {

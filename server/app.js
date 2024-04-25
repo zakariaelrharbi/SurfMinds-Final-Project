@@ -6,6 +6,8 @@ const passport = require('passport')
 const connect = require('./config/database');
 const api = require('./routes/api');
 const stripe = require('stripe')("sk_test_51P4qnCGGn1OHPdbwLOZLooJbMeyEnXr2FMCCZgjFkQ7wCoKy3X68bN06fQbwP9DgKei3dp4MVlrpyiRqugNdimpw00j7pXDmsm");
+const cors = require('cors')
+
 
 
 
@@ -15,6 +17,11 @@ const PORT = process.env.SERVER_PORT || 3001;
 // Middlewares
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
+app.use(cors({
+  origin :'*',
+  credentials:true,
+}))
 
 // Configure session management
 app.use(cookieParser());

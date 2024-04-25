@@ -37,7 +37,17 @@ async function createUser (req, res){
 // Controller pour récupérer tous les produits
 async function getAllUsers(req, res) {
     try {
-const users = await User.find({});
+      const { isAdmin } = req.query;
+      // check if the user is an admin or not.
+      if (!req.user.isAdmin) {
+        return res.status(403).json({ message: 'Unauthorized access' });
+      }
+
+      const query = {};
+      if (isAdmin) {
+        query.isAdmin = isAdmin;
+      }
+const users = await User.find({query});
       res.status(200).json(users);
     } catch (err) {
       res.status(500).json({ message: 'User not found' });
