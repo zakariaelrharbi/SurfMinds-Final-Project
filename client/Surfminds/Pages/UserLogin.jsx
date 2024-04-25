@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { FaFacebook } from 'react-icons/fa';
 import { FcGoogle } from 'react-icons/fc';
 import { FaApple } from 'react-icons/fa';
-import { FaUserAlt } from 'react-icons/fa';
 import { MdMailOutline, MdRemoveRedEye } from 'react-icons/md';
 import { IoMdEyeOff } from "react-icons/io";
 import { useFormik } from 'formik';
