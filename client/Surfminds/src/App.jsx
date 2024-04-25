@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import './App.css'
-import UserRegister from '../Pages/UserRegister'
-import UserLogin from '../Pages/UserLogin'
+import UserRegister from '../components/UserRegister'
+import UserLogin from '../components/UserLogin'
 
 
 
