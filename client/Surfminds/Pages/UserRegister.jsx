@@ -8,7 +8,7 @@ import { useFormik } from 'formik';
 import axios from 'axios';
 import * as Yup from 'yup';
 
-const Register = () => {
+const UserRegister = () => {
   const [registrationSuccess, setRegistrationSuccess] = useState(false); // State to track registration success
 
   const formik = useFormik({
@@ -191,4 +191,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default UserRegister;
