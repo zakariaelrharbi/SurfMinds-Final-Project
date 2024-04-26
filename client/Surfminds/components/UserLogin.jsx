@@ -5,46 +5,42 @@ import { FaApple } from 'react-icons/fa';
 import { MdMailOutline, MdRemoveRedEye } from 'react-icons/md';
 import { IoMdEyeOff } from "react-icons/io";
 import { useFormik } from 'formik';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import * as Yup from 'yup';
 
-
-
-const UserLogin = () => {;
-     const [loginSuccess, setLoginSuccess] = useState(false); // State to track registration success
-
+const UserLogin = () => {
   const formik = useFormik({
     initialValues: {
-      username: '',
+      // Define your form fields here
       email: '',
       password: '',
-      termsAccepted: false,
     },
     validationSchema: Yup.object({
-      username: Yup.string().required('Username is required'),
-      email: Yup.string().email('Invalid email address').required('Email is required'),
-      password: Yup.string().required('Password is required'),
-      termsAccepted: Yup.boolean().oneOf([true], 'You must accept the terms and conditions').required('You must accept the terms and conditions'),
+      // Define validation schema here
+      email: Yup.string().email('Invalid email address').required('Required'),
+      password: Yup.string().required('Required'),
     }),
-    onSubmit: async (values) => {
+    onSubmit: async (values, { setSubmitting }) => {
       try {
         await axios.post('http://localhost:3001/api/auth/login', values);
         console.log('Login Successful');
-        setLoginSuccess(true); // Set login success to true
+        // Handle success, e.g., redirect user
       } catch (error) {
         console.error('Login Failed:', error);
+        // Handle error, e.g., display error message
       } finally {
-        formik.setSubmitting(false);
+        setSubmitting(false);
       }
     },
   });
-  
-     const { handleSubmit, handleChange, values, errors } = formik;
 
-        const [showPassword, setShowPassword] = useState(false);
-        const togglePasswordVisibility = () => {
-            setShowPassword(!showPassword);
-        };
+  const { handleSubmit, handleChange, values, errors } = formik;
+
+  const [showPassword, setShowPassword] = useState(false);
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
   return (
     <>
       <div className="font-sans text-[#333] bg-gray-50 flex items-center h-screen p-4">
@@ -134,7 +130,7 @@ const UserLogin = () => {;
             </label>
         </div>
         <div className="text-sm">
-            <a href="jajvascript:void(0);" className="text-blue-600 hover:underline">
+            <a href="#" className="text-blue-600 hover:underline">
             Forgot your password?
             </a>
         </div>
@@ -150,7 +146,8 @@ const UserLogin = () => {;
           </button>
         </div>
         <p className="text-sm mt-6 text-center">
-          Don't have an account? <a href="javascript:void(0);" class="text-blue-600 hover:underline ml-1 whitespace-nowrap">Register here</a>
+          Don't have an account? 
+          <Link to="/register" className="text-blue-600 hover:underline ml-1 whitespace-nowrap">Register here</Link>
         </p>
       </form>
     </div>

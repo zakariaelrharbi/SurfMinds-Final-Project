@@ -6,6 +6,7 @@ import { FaUserAlt } from 'react-icons/fa';
 import { MdMailOutline, MdRemoveRedEye } from 'react-icons/md';
 import { IoMdEyeOff } from "react-icons/io";
 import { useFormik } from 'formik';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import * as Yup from 'yup';
 
@@ -187,9 +188,9 @@ const UserRegister = () => {
 
             <p className="text-sm mt-6 text-center">
               Already have an account?{' '}
-              <a href="#" className="text-blue-600 font-semibold hover:underline ml-1">
+              <Link to="/" className="text-blue-600 font-semibold hover:underline ml-1">
                 Login here
-              </a>
+              </Link>
             </p>
           </form>
         </div>
