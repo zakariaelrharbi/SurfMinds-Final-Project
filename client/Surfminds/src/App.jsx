@@ -1,15 +1,19 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
-import UserLogin from '../components/UserLogin';
-import UserRegister from '../components/UserRegister';
+import Login from '../Pages/Login/UserLogin';
+import Register from '../Pages/Register/Register';
+import Terms_and_conditions from '../Pages/Register/Terms_and_conditions';
+
 
 function App() {
   return (
     <div className="wrapper">
       <Router>
         <Routes>
-          <Route exact path='/' element={<UserLogin />} />
-          <Route exact path='/register' element={<UserRegister />} />
+          <Route path="/login" element={<Login/>}/>
+          <Route path="/register" element={<Register/>}/>
+          <Route path="/terms-and-conditions" element={<Terms_and_conditions/>}/>
+
         </Routes>
       </Router>
     </div>
