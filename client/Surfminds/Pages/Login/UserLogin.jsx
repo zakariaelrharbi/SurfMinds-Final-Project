@@ -22,7 +22,6 @@ const UserLogin = () => {
         console.log(data); // Here you can handle form submission logic
     };
 
-    const password = watch('password');
     const [showPassword, setShowPassword] = useState(false);
 
     const togglePasswordVisibility = () => {
@@ -33,7 +32,8 @@ const UserLogin = () => {
         <div className="font-[sans-serif] text-[#333] mt-4 p-4 relative">
             <div className="max-w-md w-full mx-auto relative z-50">
                 <div className="text-center mb-8">
-                    <a href="/" className="w-16 dark:text-[#007bff] font-bold text-3xl">SurfMinds</a>
+                    {/* link home page here */}
+                    <Link to='/' className="w-16 dark:text-[#007bff] font-bold text-3xl"> SurfMinds</Link>
                 </div>
                 <div className="border border-gray-300 bg-white rounded-md p-8">
                     <form className="w-full" onSubmit={handleSubmit(submitHandler)}>
