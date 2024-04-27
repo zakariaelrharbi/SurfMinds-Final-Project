@@ -4,8 +4,16 @@ import { MdMailOutline } from "react-icons/md";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import { Link } from 'react-router-dom';
 import {useForm} from 'react-hook-form';
+import { useMutation } from '@tanstack/react-query';
 
 const Register = () => {
+
+    useMutation({
+        mutationFn: ({ name, email, password}) => {
+            return signup({name, email, password});
+        }
+    })
+
     const {register, 
            handleSubmit,
            formState: {errors, isValid},
