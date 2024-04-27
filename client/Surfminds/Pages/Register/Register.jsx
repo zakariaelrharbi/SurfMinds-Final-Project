@@ -88,7 +88,7 @@ const Register = () => {
                     }
                 })}
                 placeholder="Enter email"
-                className={`bg-white border border-gray-300 w-full text-sm px-5 py-2.5 rounded  block text-left ${errors.email ? "outline-red-500" : "outline-blue-500"}`}
+                className={`bg-white border border-gray-300 w-full text-sm px-5 py-2.5 rounded  ${errors.email ? "outline-red-500" : "outline-blue-500"}`}
                 />
             <MdMailOutline className="w-4 h-4 absolute right-4"/>
             </div>
@@ -113,7 +113,7 @@ const Register = () => {
                     },
                 })}
                 placeholder="Enter password"
-                className={`bg-white border border-gray-300 w-full text-sm px-5 py-2.5 rounded block text-left ${errors.password ? "outline-red-500" : "outline-blue-500"}`}
+                className={`bg-white border border-gray-300 w-full text-sm px-5 py-2.5 rounded ${errors.password ? "outline-red-500" : "outline-blue-500"}`}
               />
              {showPassword ? (
                 <FaRegEyeSlash
