@@ -5,8 +5,8 @@ import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import { Link } from 'react-router-dom';
 import {useForm} from 'react-hook-form';
 
-const Login = () => {
-    const {register, 
+const UserLogin = () => {
+    const {Login, 
            handleSubmit,
            formState: {errors, isValid},
            watch,
@@ -43,7 +43,7 @@ const Login = () => {
     <div className="border border-gray-300 bg-white rounded-md p-8">
       <form className="w-full" onSubmit={handleSubmit(submitHandler)}>
         <div className="mb-6">
-          <h3 className="text-2xl font-extrabold text-center">Register</h3>
+          <h3 className="text-2xl font-extrabold text-center">Login</h3>
         </div>
         <div className="space-y-6">
           <div>
@@ -208,4 +208,4 @@ const Login = () => {
   )
 }
 
-export default Login
+export default UserLogin

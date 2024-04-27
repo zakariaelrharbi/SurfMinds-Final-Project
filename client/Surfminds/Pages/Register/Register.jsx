@@ -4,15 +4,10 @@ import { MdMailOutline } from "react-icons/md";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import { Link } from 'react-router-dom';
 import {useForm} from 'react-hook-form';
-import { useMutation } from '@tanstack/react-query';
+
 
 const Register = () => {
 
-    useMutation({
-        mutationFn: ({ name, email, password}) => {
-            return signup({name, email, password});
-        }
-    })
 
     const {register, 
            handleSubmit,
@@ -20,7 +15,7 @@ const Register = () => {
            watch,
            } = useForm({
             defaultValues: {
-                name: "",
+                username: "",
                 email: "",
                 password: "",
                 confirmPassword: ""
@@ -28,7 +23,10 @@ const Register = () => {
             mode: "onChange",
     } );
 
-    const submitHandler = () => {};
+    const submitHandler = (data) => {
+         const {username, email, password} = data;
+            mutate(username, email, password)
+    };
 
     const password = watch('password');
     const [showPassword, setShowPassword] = useState(false);
@@ -55,28 +53,28 @@ const Register = () => {
         </div>
         <div className="space-y-6">
           <div>
-            <label className="text-sm mb-2 block text-left">Name</label>
+            <label className="text-sm mb-2 block text-left">username</label>
             <div className="relative flex items-center ">
               <input
-                name="name"
+                name="username"
                 type="text"
-                {...register("name",{
+                {...register("username",{
                     minLength: {
                         value: 3,
-                        message: "Name must be at least 3 character",
+                        message: "username must be at least 3 character",
                     },
                     required:{
                         value: true,
-                        message: "Name is required"
+                        message: "username is required"
                     }
                 })}
-                placeholder="Enter name"
-                className={`bg-white border border-gray-300 w-full text-sm px-5 py-2.5 rounded ${errors.name ? "outline-red-500" : "outline-blue-500"}`}
+                placeholder="Enter username"
+                className={`bg-white border border-gray-300 w-full text-sm px-5 py-2.5 rounded ${errors.username ? "outline-red-500" : "outline-blue-500"}`}
               />
             <FaRegUser className="w-4 h-4 absolute right-4"/>
             </div>
-              {errors.name?.message && (
-                <p className="text-red-500 text-xs mt-1 block text-left">{errors.name?.message}</p>
+              {errors.username?.message && (
+                <p className="text-red-500 text-xs mt-1 block text-left">{errors.username?.message}</p>
               )}
           </div>
           <div>
