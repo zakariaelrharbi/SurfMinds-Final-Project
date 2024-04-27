@@ -41,15 +41,15 @@ const Register = () => {
 
   return (
     <>
-      <div className="font-[sans-serif] text-[#333] mt-4 p-4 relative">
+      <div className="font-[sans-serif] text-[#333] p-1 relative">
   <div className="max-w-md w-full mx-auto relative z-50">
-            <div className="text-center mb-8">
+            <div className="text-center mb-4">
                 {/* link home page here */}
                 <Link to='/' className="w-16 dark:text-[#007bff] font-bold text-3xl"> SurfMinds</Link>
             </div>
-    <div className="border border-gray-300 bg-white rounded-md p-8">
+    <div className="border border-gray-300 bg-white rounded-md p-6">
       <form className="w-full" onSubmit={handleSubmit(submitHandler)}>
-        <div className="mb-6">
+        <div className="">
           <h3 className="text-2xl font-extrabold text-center">Register</h3>
         </div>
         <div className="space-y-6">
