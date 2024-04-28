@@ -7,7 +7,14 @@ import {useForm} from 'react-hook-form';
 
 
 const Register = () => {
-
+    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    
+    const onSubmit = (e) => {
+      e.preventDefault();
+      console.log('register', username, email, password);
+    }
 
     const {register, 
            handleSubmit,
@@ -23,12 +30,10 @@ const Register = () => {
             mode: "onChange",
     } );
 
-    const submitHandler = (data) => {
-         const {username, email, password} = data;
-            mutate(username, email, password)
+    const submitHandler = () => {
     };
 
-    const password = watch('password');
+    const Password = watch('password');
     const [showPassword, setShowPassword] = useState(false);
         const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
@@ -48,7 +53,7 @@ const Register = () => {
                 <Link to='/' className="w-16 dark:text-[#007bff] font-bold text-3xl"> SurfMinds</Link>
             </div>
     <div className="border border-gray-300 bg-white rounded-md p-6">
-      <form className="w-full" onSubmit={handleSubmit(submitHandler)}>
+      <form className="w-full" onSubmit={onSubmit}>
         <div className="">
           <h3 className="text-2xl font-extrabold text-center">Register</h3>
         </div>
@@ -59,6 +64,7 @@ const Register = () => {
               <input
                 name="username"
                 type="text"
+                onChange={(e) => setUsername(e.target.value)}
                 {...register("username",{
                     minLength: {
                         value: 3,
@@ -83,7 +89,8 @@ const Register = () => {
             <div className="relative flex items-center">
               <input
                 name="email"
-                type="email"
+                type="text"
+                onChange={(e) => setEmail(e.target.value)}
                 {...register("email", {
                    required:{
                         value: true,
@@ -108,6 +115,7 @@ const Register = () => {
             <div className="relative flex items-center">
               <input
                 name="password"
+                onChange={(e) => setPassword(e.target.value)}
                 type={showPassword ? 'text' : 'password'}
                  {...register("password",{
                     minLength: {
@@ -150,7 +158,7 @@ const Register = () => {
                         message: "Confirm Password is required"
                     },
                     validate: (value) => {
-                        if(value !== password){
+                        if(value !== Password){
                             return "Password does not match";
                         }
                     }
