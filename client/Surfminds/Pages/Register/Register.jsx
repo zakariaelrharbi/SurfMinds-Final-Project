@@ -1,48 +1,44 @@
 import React, { useState } from 'react';
-import { FaRegUser } from "react-icons/fa";
+import { FaRegUser, FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import { MdMailOutline } from "react-icons/md";
-import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
-import { Link } from 'react-router-dom';
-import {useForm} from 'react-hook-form';
-
+import { Link, useNavigate } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import { useDispatch } from 'react-redux';
+import { UserRegister } from '../../store/reducers/auth';
 
 const Register = () => {
-    const [username, setUsername] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    
-    const onSubmit = (e) => {
-      e.preventDefault();
-      console.log('register', username, email, password);
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const { register, handleSubmit, formState: { errors, isValid }, watch } = useForm({
+        defaultValues: {
+            username: "",
+            email: "",
+            password: "",
+            confirmPassword: ""
+        },
+        mode: "onChange",
+    });
+    const [termsAccepted, setTermsAccepted] = useState(false);
+
+    const onSubmit = (data) => {
+        console.log('register', data.username, data.email, data.password);
+        dispatch(UserRegister(data)).then(action => {
+          localStorage.setItem('accessToken', action.payload.token);
+          navigate('/login');
+        });
     }
-
-    const {register, 
-           handleSubmit,
-           formState: {errors, isValid},
-           watch,
-           } = useForm({
-            defaultValues: {
-                username: "",
-                email: "",
-                password: "",
-                confirmPassword: ""
-            },
-            mode: "onChange",
-    } );
-
-    const submitHandler = () => {
-    };
 
     const Password = watch('password');
     const [showPassword, setShowPassword] = useState(false);
-        const togglePasswordVisibility = () => {
-        setShowPassword(!showPassword);
-        };
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-        const toggleConfirmPasswordVisibility = () => {
-        setShowConfirmPassword(!showConfirmPassword);
-        };
 
+    const togglePasswordVisibility = () => {
+        setShowPassword(!showPassword);
+    };
+
+    const toggleConfirmPasswordVisibility = () => {
+        setShowConfirmPassword(!showConfirmPassword);
+    };
 
   return (
     <>
@@ -53,7 +49,7 @@ const Register = () => {
                 <Link to='/' className="w-16 dark:text-[#007bff] font-bold text-3xl"> SurfMinds</Link>
             </div>
     <div className="border border-gray-300 bg-white rounded-md p-6">
-      <form className="w-full" onSubmit={onSubmit}>
+      <form className="w-full" onSubmit={handleSubmit(onSubmit)}>
         <div className="">
           <h3 className="text-2xl font-extrabold text-center">Register</h3>
         </div>
@@ -64,7 +60,6 @@ const Register = () => {
               <input
                 name="username"
                 type="text"
-                onChange={(e) => setUsername(e.target.value)}
                 {...register("username",{
                     minLength: {
                         value: 3,
@@ -90,7 +85,6 @@ const Register = () => {
               <input
                 name="email"
                 type="text"
-                onChange={(e) => setEmail(e.target.value)}
                 {...register("email", {
                    required:{
                         value: true,
@@ -115,7 +109,6 @@ const Register = () => {
             <div className="relative flex items-center">
               <input
                 name="password"
-                onChange={(e) => setPassword(e.target.value)}
                 type={showPassword ? 'text' : 'password'}
                  {...register("password",{
                     minLength: {
@@ -189,6 +182,7 @@ const Register = () => {
               name="remember-me"
               type="checkbox"
               className="h-4 w-4 shrink-0 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+              onChange={(e) => setTermsAccepted(e.target.checked)}
             />
             <label htmlFor="remember-me" className="ml-3 block text-sm">
               I accept the{" "}
@@ -201,7 +195,7 @@ const Register = () => {
         <div className="!mt-10">
           <button
             type="submit"
-            disabled = {!isValid}
+            disabled = {!isValid || !termsAccepted}
             className="w-full py-3 px-4 text-sm font-semibold rounded text-white bg-blue-600 hover:bg-blue-700 focus:outline-none cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed"
           >
             Create an account
