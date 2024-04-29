@@ -3,24 +3,22 @@ import { MdMailOutline } from "react-icons/md";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { userLogin } from '../../store/reducers/auth';
 
 const UserLogin = () => {
-    const {
-        register,
-        handleSubmit,
-        formState: { errors, isValid },
-        watch,
-    } = useForm({
-        defaultValues: {
-            email: "",
-            password: "",
-        },
-        mode: "onChange",
-    });
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const { login, handleSubmit, formState: { errors, isValid } } = useForm({ mode: "onChange" });
 
-    const submitHandler = (data) => {
-        console.log(data); // Here you can handle form submission logic
-    };
+    const onSubmit = (data) => {
+        console.log('login', data.email, data.password);
+        dispatch(userLogin(data)).then(action => {
+            localStorage.setItem('accessToken', action.payload.token);
+            navigate('/register');
+        });
+    }
 
     const [showPassword, setShowPassword] = useState(false);
 
@@ -36,7 +34,7 @@ const UserLogin = () => {
                     <Link to='/' className="w-16 dark:text-[#007bff] font-bold text-3xl"> SurfMinds</Link>
                 </div>
                 <div className="border border-gray-300 bg-white rounded-md p-8">
-                    <form className="w-full" onSubmit={handleSubmit(submitHandler)}>
+                    <form className="w-full" onSubmit={handleSubmit(onSubmit)}>
                         <div className="mb-6">
                             <h3 className="text-2xl font-extrabold text-center">Login</h3>
                         </div>
@@ -47,7 +45,7 @@ const UserLogin = () => {
                                     <input
                                         name="email"
                                         type="email"
-                                        {...register("email", {
+                                        {...login("email", {
                                             required: "Email is required",
                                             pattern: {
                                                 value: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
@@ -69,7 +67,7 @@ const UserLogin = () => {
                                     <input
                                         name="password"
                                         type={showPassword ? 'text' : 'password'}
-                                        {...register("password", {
+                                        {...login("password", {
                                             required: "Password is required",
                                             minLength: {
                                                 value: 8,
@@ -95,16 +93,17 @@ const UserLogin = () => {
                                     <p className="text-red-500 text-xs mt-1 block text-left">{errors.password.message}</p>
                                 )}
                             </div>
-                             <div className="flex items-center justify-between gap-4">
+                        </div>
+                        <div className="flex items-center justify-between gap-4">
                             <div className="flex items-center">
                                 <input
-                                id="remember-me"
-                                name="remember-me"
-                                type="checkbox"
-                                className="h-4 w-4 shrink-0 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                                    id="remember-me"
+                                    name="remember-me"
+                                    type="checkbox"
+                                    className="h-4 w-4 shrink-0 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                                 />
                                 <label htmlFor="remember-me" className="ml-3 block text-sm">
-                                Remember me
+                                    Remember me
                                 </label>
                             </div>
                             <div>
@@ -112,10 +111,8 @@ const UserLogin = () => {
                                 <Link to='/' className="text-sm text-blue-600 hover:text-blue-500">
                                     Forgot Password?
                                 </Link>
-                            
                             </div>
-                            </div>
-                            </div>
+                        </div>
                         <div className="!mt-10">
                             <button
                                 type="submit"

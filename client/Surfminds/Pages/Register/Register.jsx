@@ -4,7 +4,7 @@ import { MdMailOutline } from "react-icons/md";
 import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
-import { UserRegister } from '../../store/reducers/auth';
+import { userRegister } from '../../store/reducers/auth';
 
 const Register = () => {
     const navigate = useNavigate();
@@ -14,7 +14,8 @@ const Register = () => {
             username: "",
             email: "",
             password: "",
-            confirmPassword: ""
+            confirmPassword: "",
+            isAdmin: "false"
         },
         mode: "onChange",
     });
@@ -22,8 +23,7 @@ const Register = () => {
 
     const onSubmit = (data) => {
         console.log('register', data.username, data.email, data.password);
-        dispatch(UserRegister(data)).then(action => {
-          localStorage.setItem('accessToken', action.payload.token);
+        dispatch(userRegister(data)).then(action => {
           navigate('/login');
         });
     }
