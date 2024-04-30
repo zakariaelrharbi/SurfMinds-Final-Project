@@ -7,12 +7,14 @@ const connect = require('./config/database');
 const api = require('./routes/api');
 const stripe = require('stripe')("sk_test_51P4qnCGGn1OHPdbwLOZLooJbMeyEnXr2FMCCZgjFkQ7wCoKy3X68bN06fQbwP9DgKei3dp4MVlrpyiRqugNdimpw00j7pXDmsm");
 const cors = require('cors')
+const dotenv = require("dotenv");
 
+dotenv.config();
 
 
 
 const app = express();
-const PORT = process.env.SERVER_PORT || 3001;
+const PORT = process.env.SERVER_PORT || 5000;
 
 // Middlewares
 app.use(express.json());
