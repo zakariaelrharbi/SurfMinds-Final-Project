@@ -2,8 +2,6 @@ const { body, validationResult } = require('express-validator');
 
 // Middleware for validating and sanitizing input
 const validateLoginInput = [
-
-
   // Validate password
   body('password')
     .notEmpty()
