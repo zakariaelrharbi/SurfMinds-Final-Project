@@ -91,7 +91,7 @@ const UserLogin = () => {
                                 )}
                             </div>
                         </div>
-                        <div className="flex items-center justify-between gap-4">
+                        <div className="flex items-center justify-between pt-3 gap-4">
                             <div className="flex items-center">
                                 <input
                                     id="remember-me"
