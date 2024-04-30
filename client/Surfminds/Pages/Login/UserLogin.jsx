@@ -14,7 +14,6 @@ const UserLogin = () => {
     const onSubmit = (data) => {
         console.log('login', data.email, data.password);
         dispatch(userLogin(data)).then(action => {
-            navigate('/register');
         });
     }
 
