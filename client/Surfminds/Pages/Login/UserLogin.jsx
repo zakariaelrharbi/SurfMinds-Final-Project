@@ -1,20 +1,21 @@
+// UserLogin.js
+
 import React, { useState } from 'react';
 import { MdMailOutline } from "react-icons/md";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { userLogin } from '../../store/reducers/auth';
 
 const UserLogin = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const { register, handleSubmit, formState: { errors, isValid } } = useForm({ mode: "onChange" }); // Changed login to register
+    const { register, handleSubmit, formState: { errors, isValid } } = useForm({ mode: "onChange" });
+    const authError = useSelector(state => state.auth.error); // Access error from Redux store
 
     const onSubmit = (data) => {
-        console.log('login', data.email, data.password);
-        dispatch(userLogin(data)).then(action => {
-        });
+        dispatch(userLogin(data));
     }
 
     const [showPassword, setShowPassword] = useState(false);
@@ -22,12 +23,12 @@ const UserLogin = () => {
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
     };
+    console.log('Auth error:', authError);
 
     return (
         <div className="font-[sans-serif] text-[#333] mt-4 p-4 relative">
             <div className="max-w-md w-full mx-auto relative z-50">
                 <div className="text-center mb-8">
-                    {/* link home page here */}
                     <Link to='/' className="w-16 dark:text-[#007bff] font-bold text-3xl"> SurfMinds</Link>
                 </div>
                 <div className="border border-gray-300 bg-white rounded-md p-8">
@@ -35,6 +36,9 @@ const UserLogin = () => {
                         <div className="mb-6">
                             <h3 className="text-2xl font-extrabold text-center">Login</h3>
                         </div>
+                        {authError && (
+                            <p className="text-red-500 text-xs mb-4 text-center">{authError}</p>
+                        )}
                         <div className="space-y-6">
                             <div>
                                 <label className="text-sm mb-2 block text-left">Email</label>
@@ -104,7 +108,6 @@ const UserLogin = () => {
                                 </label>
                             </div>
                             <div>
-                                {/* link Forget password page here */}
                                 <Link to='/' className="text-sm text-blue-600 hover:text-blue-500">
                                     Forgot Password?
                                 </Link>
@@ -129,7 +132,5 @@ const UserLogin = () => {
         </div>
     );
 }
-
-
 
 export default UserLogin;
