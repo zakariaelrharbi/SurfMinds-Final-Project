@@ -1,14 +1,15 @@
 const Order = require('../models/Order');
 const PaymentMethod = require('../models/paymentMethod');
 const Product = require('../models/Product');
-const User = require('../models/User');
+
 
 
 // Create a new order
 async function createOrder(req, res) {
     try {
-        const { products, paymentMethodId, shippingAddress,orderDate } = req.body;
-        // const userId = req.user._id;
+        const {  products, paymentMethodId, shippingAddress,orderDate } = req.body;
+        const costumerId = req.user._id.toString();
+        // console.log(costumerId);
         // Fetch payment method details from database
         const paymentMethod = await PaymentMethod.findById(paymentMethodId);
         if (!paymentMethod) {
@@ -27,7 +28,7 @@ async function createOrder(req, res) {
         
         // Create the order
         const order = new Order({
-            // userId: userId,
+            costumerId,
             products,
             totalPrice,
             paymentMethod,
@@ -47,15 +48,51 @@ async function createOrder(req, res) {
     }
 }
 
-const getAllOrders = async (req, res) => {
+async function getAllOrders(req, res) {
     try {
-        const orders = await Order.find();
-        res.json(orders);
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Server error' });
-    }
+        // Extract query parameters for pagination
+      const page = parseInt(req.query.page) || 0; // Default page is 1
+      const limit = 2; // Number of products per page
+      const skip = page * limit;
+  
+      // Fetch total count of products
+      const totalCount = await Order.countDocuments({});
+  
+      // Fetch products with pagination
+      const orders = await Order.find({})
+        .skip(skip)
+        .limit(limit);
+  
+      // Calculate total pages
+      const totalPages = Math.ceil(totalCount / limit);
+  
+      // Determine if there are previous and next pages
+      const hasNextPage = page < totalPages-1;
+      const hasPrevPage = page > 0;
+  
+      // Create pagination object
+      const pagination = {
+        currentPage: page,
+        hasNextPage,
+        hasPrevPage,
+        totalOrders: orders.length,
+        totalPages
+      };
+  
+      // Create response object
+      const response = {
+        orders,
+        pagination
+      };
+  
+      res.status(200).json(response);
+      } catch (err) {
+        res.status(500).json({ message: 'Non trouvé' });
+      }
 };
+
+
+
 
 const getOrderById = async (req, res) => {
     try {

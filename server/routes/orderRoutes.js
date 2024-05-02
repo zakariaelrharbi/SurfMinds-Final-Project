@@ -7,7 +7,7 @@ const {isAuthenticated} = require('../middleware/authMiddleware');
 
 
 // GET all Orders
-router.get('/'   ,isAuthenticated  ,orderController.getAllOrders);
+router.get('/',orderController.getAllOrders);
 
 
 // GET a order by ID

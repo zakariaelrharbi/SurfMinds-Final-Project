@@ -37,8 +37,42 @@ async function createProduct (req, res){
 // Controller pour récupérer tous les produits
 async function getAllProducts(req, res) {
     try {
-const products = await Product.find({});
-      res.status(200).json(products);
+      // Extract query parameters for pagination
+    const page = parseInt(req.query.page) || 0; // Default page is 1
+    const limit = 2; // Number of products per page
+    const skip = page * limit;
+
+    // Fetch total count of products
+    const totalCount = await Product.countDocuments({});
+
+    // Fetch products with pagination
+    const products = await Product.find({})
+      .skip(skip)
+      .limit(limit);
+
+    // Calculate total pages
+    const totalPages = Math.ceil(totalCount / limit);
+
+    // Determine if there are previous and next pages
+    const hasNextPage = page < totalPages-1;
+    const hasPrevPage = page > 0;
+
+    // Create pagination object
+    const pagination = {
+      currentPage: page,
+      hasNextPage,
+      hasPrevPage,
+      totalProducts: products.length,
+      totalPages
+    };
+
+    // Create response object
+    const response = {
+      products,
+      pagination
+    };
+
+    res.status(200).json(response);
     } catch (err) {
       res.status(500).json({ message: 'Non trouvé' });
     }
@@ -78,12 +112,6 @@ async function getProductById (req, res){
       res.status(400).json({ message: err.message });
     }
   }
-
-
-
-
-
-
     module.exports = {
         getAllProducts,
         getProductById,
