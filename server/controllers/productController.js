@@ -56,6 +56,9 @@ async function getAllProducts(req, res) {
     const hasNextPage = page < totalPages-1;
     const hasPrevPage = page > 0;
 
+
+
+    
     // Create pagination object
     const pagination = {
       currentPage: page,
