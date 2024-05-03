@@ -50,6 +50,8 @@ async function getAllProducts(req, res) {
     // Calculate total pages
     const totalPages = Math.ceil(totalCount / limit);
 
+    
+
     // Determine if there are previous and next pages
     const hasNextPage = page < totalPages-1;
     const hasPrevPage = page > 0;
