@@ -14,18 +14,19 @@ const UserLogin = () => {
     const dispatch = useDispatch();
     const { register, handleSubmit, formState: { errors, isValid } } = useForm({ mode: "onChange" });
     const authError = useSelector(state => state.auth.error); // Access error from Redux store
+    const user =  useSelector(state => state.auth);
 
     const onSubmit = (data) => {
         dispatch(userLogin(data));
     }
+    console.log(user);
+
 
     const [showPassword, setShowPassword] = useState(false);
 
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
     };
-    console.log('Auth error:', authError);
-
     return (
         <div className="font-[sans-serif] text-[#333] mt-4 p-4 relative">
             <div className="max-w-md w-full mx-auto relative z-50">
@@ -94,6 +95,8 @@ const UserLogin = () => {
                                 {errors.password && (
                                     <p className="text-red-500 text-xs mt-1 block text-left">{errors.password.message}</p>
                                 )}
+                           
+                               
                             </div>
                         </div>
                         <div className="flex items-center justify-between pt-3 gap-4">

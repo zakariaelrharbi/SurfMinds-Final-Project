@@ -20,22 +20,24 @@
 //     }
 // });
 
-// export const userLogin = createAsyncThunk(
-//     "auth/login",
-//     async (userData, thunkAPI) => {
-//         try {
-//             const response = await axios.post(
-//                 "http://localhost:3001/api/auth/login", userData,
-//                 {
-//                     withCredentials: true
-//                 }
-//             );
-//             return response.data.user;
-//         } catch (err) {
-//             return thunkAPI.rejectWithValue(err.response.data.errors);
-//         }
-//     }
-// );
+export const userLogin = createAsyncThunk(
+    "auth/login",
+    async (userData, thunkAPI) => {
+      // console.log(userData);
+        try {
+            const response = await axios.post(
+                "http://localhost:3001/api/auth/login", userData,
+                {
+                    withCredentials: true
+                }
+            );
+            // console.log(response.data);
+            return response.data;
+        } catch (err) {
+            return thunkAPI.rejectWithValue(err.response.data.errors);
+        }
+    }
+);
 
 // const authSlice = createSlice({
 //     name: "auth",
@@ -91,22 +93,22 @@ export const userRegister = createAsyncThunk(
   }
 );
 
-export const userLogin = createAsyncThunk(
-  "auth/login",
-  async (userData, thunkAPI) => {
-    try {
-      const response = await axios.post(
-        "http://localhost:3001/api/auth/login", userData,
-        {
-            withCredentials: true
-        }
-      );
-      return response.data.user;
-    } catch (err) {
-      return thunkAPI.rejectWithValue(err.response.data.errors);
-    }
-  }
-);
+// export const userLogin = createAsyncThunk(
+//   "auth/login",
+//   async (userData, thunkAPI) => {
+//     try {
+//       const response = await axios.post(
+//         "http://localhost:3001/api/auth/login", userData,
+//         {
+//             withCredentials: true
+//         }
+//       );
+//       return response.data;
+//     } catch (err) {
+//       return thunkAPI.rejectWithValue(err.response.data.errors);
+//     }
+//   }
+// );
 
 export const getCurrentUser = createAsyncThunk(
   "auth/getCurrentUser",
@@ -150,9 +152,13 @@ const authSlice = createSlice({
       .addCase(userLogin.fulfilled, (state, action) => {
         state.isLoading = false;
         state.currentUser = action.payload;
+        // console.log(action.payload);
+        state.error = null;
       })
       .addCase(userLogin.rejected, (state) => {
         state.isLoading = false;
+        state.error = action.payload;
+        
       })
       .addCase(getCurrentUser.pending, (state) => {
         state.isLoading = true;
