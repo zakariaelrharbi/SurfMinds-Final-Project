@@ -4,7 +4,7 @@ import { MdMailOutline } from "react-icons/md";
 import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
-import { userRegister } from '../../store/reducers/auth';
+import { userRegister } from '../../../store/reducers/auth';
 
 const Register = () => {
     const navigate = useNavigate();

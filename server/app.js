@@ -5,13 +5,18 @@ const cookieParser = require('cookie-parser')
 const passport = require('passport')
 const connect = require('./config/database');
 const api = require('./routes/api');
-const cors = require('cors');
-// const stripe = require('stripe')("sk_test_51P4qnCGGn1OHPdbwLOZLooJbMeyEnXr2FMCCZgjFkQ7wCoKy3X68bN06fQbwP9DgKei3dp4MVlrpyiRqugNdimpw00j7pXDmsm");
+
+const stripe = require('stripe')("sk_test_51P4qnCGGn1OHPdbwLOZLooJbMeyEnXr2FMCCZgjFkQ7wCoKy3X68bN06fQbwP9DgKei3dp4MVlrpyiRqugNdimpw00j7pXDmsm");
+const cors = require('cors')
+const dotenv = require("dotenv");
+
+dotenv.config();
+
 
 
 
 const app = express();
-const PORT = process.env.SERVER_PORT || 3001;
+const PORT = process.env.SERVER_PORT || 5000;
 
 app.use(cors({
   origin: 'http://localhost:5173', // Allow requests from this origin

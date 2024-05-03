@@ -37,6 +37,7 @@ async function createUser (req, res){
 // Controller pour récupérer tous les produits
 async function getAllUsers(req, res) {
     try {
+
       // Extract query parameters for pagination
     const page = parseInt(req.query.page) || 0; // Default page is 1
     const limit = 2; // Number of users per page
@@ -72,6 +73,7 @@ async function getAllUsers(req, res) {
     };
 
     res.status(200).json(response);
+
     } catch (err) {
       res.status(500).json({ message: 'User not found' });
     }

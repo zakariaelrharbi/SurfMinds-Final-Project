@@ -6,7 +6,8 @@ import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from "react-redux";
-import { userLogin } from '../../store/reducers/auth';
+import { userLogin } from "../../../store/reducers/auth";
+
 
 const UserLogin = () => {
     const navigate = useNavigate();

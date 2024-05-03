@@ -2,12 +2,12 @@
 const express = require('express');
 const router = express.Router();
 const orderController = require('../controllers/orderController');
-const {authenticate} = require('../middleware/authMiddleware');
+const {authenticate, isAdmin} = require('../middleware/authMiddleware');
 const {isAuthenticated} = require('../middleware/authMiddleware');
 
 
 // GET all Orders
-router.get('/',orderController.getAllOrders);
+router.get('/',[isAuthenticated,isAdmin],orderController.getAllOrders);
 
 
 // GET a order by ID
