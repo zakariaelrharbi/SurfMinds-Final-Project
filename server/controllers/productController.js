@@ -78,8 +78,11 @@ async function getAllProducts(req, res) {
     } catch (err) {
       res.status(500).json({ message: 'Non trouvé' });
 
+
 }
+
 }
+
 
 
 // Controller pour récupérer un produit par son ID
