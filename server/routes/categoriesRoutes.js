@@ -5,7 +5,7 @@ const {isAuthenticated} = require('../middleware/authMiddleware');
 
 const CategoryController = require('../controllers/categoryController');
 
-router.post('/',isAuthenticated , isAdmin ,CategoryController.CreateCategory);
+router.post('/',isAuthenticated ,CategoryController.CreateCategory);
 router.get('/', CategoryController.GetAllCategories);
 router.get('/:id', CategoryController.GetCatergoryById);
 router.put('/:id',isAuthenticated , isAdmin , CategoryController.UpdateCategory);

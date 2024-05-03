@@ -30,7 +30,17 @@ const CreateCategory = async (req, res) => {
 
 const GetAllCategories = async (req, res) =>{
     try {
-        const categories = await Category_Equipement.find();
+        const { name, description } = req.query;
+        
+        const query = {};
+        if (name) {
+            query.name = name;
+        }
+        if (description) {
+            query.description = description;
+        }
+
+        const categories = await Category_Equipement.find(query);
         res.status(200).json(categories);
     } catch (error) {
         res.status(400).json("Categories not found");

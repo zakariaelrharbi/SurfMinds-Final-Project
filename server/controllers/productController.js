@@ -3,10 +3,6 @@
 //import the model Product
 const Product = require('../models/Product');
 
-
-
-
- 
 // Controller pour créer un nouveau produit
 async function createProduct (req, res){
   const { title, description, quantity, price, status } = req.body;
@@ -77,6 +73,7 @@ async function getAllProducts(req, res) {
       res.status(500).json({ message: 'Non trouvé' });
     }
 }
+
 
 // Controller pour récupérer un produit par son ID
 async function getProductById (req, res){
