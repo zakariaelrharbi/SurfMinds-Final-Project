@@ -11,6 +11,7 @@ const authController = require('../controllers/authController');
 
 
 
+
 // Auth registration route
 
 router.get('/Dashboard',isAuthenticated ,isAdmin, (req,res)=> {
