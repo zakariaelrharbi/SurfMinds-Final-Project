@@ -37,18 +37,43 @@ async function createUser (req, res){
 // Controller pour récupérer tous les produits
 async function getAllUsers(req, res) {
     try {
-      const { isAdmin } = req.query;
-      // check if the user is an admin or not.
-      if (!req.user.isAdmin) {
-        return res.status(403).json({ message: 'Unauthorized access' });
-      }
 
-      const query = {};
-      if (isAdmin) {
-        query.isAdmin = isAdmin;
-      }
-const users = await User.find({query});
-      res.status(200).json(users);
+      // Extract query parameters for pagination
+    const page = parseInt(req.query.page) || 0; // Default page is 1
+    const limit = 2; // Number of users per page
+    const skip = page * limit;
+
+    // Fetch total count of users
+    const totalCount = await User.countDocuments({});
+
+    // Fetch users with pagination
+    const users = await User.find({})
+      .skip(skip)
+      .limit(limit);
+
+    // Calculate total pages
+    const totalPages = Math.ceil(totalCount / limit);
+
+    // Determine if there are previous and next pages
+    const hasNextPage = page < totalPages;
+    const hasPrevPage = page > 0;
+
+    // Create pagination object
+    const pagination = {
+      currentPage: page,
+      hasNextPage,
+      hasPrevPage,
+      totalProducts: users.length,
+    };
+
+    // Create response object
+    const response = {
+      users,
+      pagination,
+    };
+
+    res.status(200).json(response);
+
     } catch (err) {
       res.status(500).json({ message: 'User not found' });
     }

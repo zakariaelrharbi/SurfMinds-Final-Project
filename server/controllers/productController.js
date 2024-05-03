@@ -32,31 +32,49 @@ async function createProduct (req, res){
 
 // Controller pour récupérer tous les produits
 async function getAllProducts(req, res) {
-  const { title, description, quantity, price, status } = req.query;
-  let query = {};
-  try {
-    if (title) {
-      query.title = { $regex: title, $options: 'i' };
-    }
-    if (description) {
-      query.description = { $regex: description, $options: 'i' };
-    }
-    if (!isNaN(parseFloat(quantity))) {
-      query.quantity = parseFloat(quantity);
-    }
-    if (!isNaN(parseFloat(price))) {
-      query.price = parseFloat(price);
-    }
-    if (status) {
-      query.status = status;
-    }
-    const products = await Product.find(query);
-    res.status(200).json(products);
-  } catch (err) {
-    res.status(500).json({ message: 'Internal Server Error' });
-  }
-}
 
+    try {
+      // Extract query parameters for pagination
+    const page = parseInt(req.query.page) || 0; // Default page is 1
+    const limit = 2; // Number of products per page
+    const skip = page * limit;
+
+    // Fetch total count of products
+    const totalCount = await Product.countDocuments({});
+
+    // Fetch products with pagination
+    const products = await Product.find({})
+      .skip(skip)
+      .limit(limit);
+
+    // Calculate total pages
+    const totalPages = Math.ceil(totalCount / limit);
+
+    // Determine if there are previous and next pages
+    const hasNextPage = page < totalPages-1;
+    const hasPrevPage = page > 0;
+
+    // Create pagination object
+    const pagination = {
+      currentPage: page,
+      hasNextPage,
+      hasPrevPage,
+      totalProducts: products.length,
+      totalPages
+    };
+
+    // Create response object
+    const response = {
+      products,
+      pagination
+    };
+
+    res.status(200).json(response);
+    } catch (err) {
+      res.status(500).json({ message: 'Non trouvé' });
+
+}
+}
 
 // Controller pour récupérer un produit par son ID
 async function getProductById (req, res){
@@ -92,12 +110,6 @@ async function getProductById (req, res){
       res.status(400).json({ message: err.message });
     }
   }
-
-
-
-
-
-
     module.exports = {
         getAllProducts,
         getProductById,

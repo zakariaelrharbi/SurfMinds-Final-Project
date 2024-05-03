@@ -4,6 +4,10 @@ const mongoose  = require("mongoose");
 //Defining User Schema
 const OrderSchema = new mongoose.Schema(
     {
+        costumerId :{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User'
+        },
         products: [{
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Product'
